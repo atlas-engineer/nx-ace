@@ -1,0 +1,2 @@
+* Ace for Nyxt
+This extension enables use the use of the Ace editor within Nyxt.
