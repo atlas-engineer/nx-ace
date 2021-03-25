@@ -48,6 +48,19 @@
                                           (write (ps:lisp content))))))
     (ffi-buffer-evaluate-javascript-async (buffer ace) insert-content)))
 
+(defmethod set-content ((ace ace-mode) value)
+  (pflet ((set-content (value)
+                       (ps:chain editor session (set-value (ps:lisp value)))))
+    (set-content value)))
+
+(defmethod get-content ((ace ace-mode))
+  (pflet ((get-content ()
+                       (ps:chain editor (get-value))))
+    (get-content)))
+
+(defun current-ace ()
+  (find-submode (current-buffer) 'ace-mode))
+
 (define-command ace ()
   "Show Ace editor."
   (let* ((ace-buffer (make-buffer :title "*Ace*" :modes '(ace-mode base-mode))))
