@@ -6,7 +6,6 @@
   :license  "BSD 2-clause"
   :version "0.0.1"
   :serial t
-  :depends-on (#:nyxt
-               :alexandria)
+  :depends-on (#:nyxt)
   :components ((:file "package")
                (:file "nx-ace")))

@@ -6,8 +6,7 @@
 
 (define-mode ace-mode (editor-mode)
   "Mode for usage with the Ace editor."
-  ((file :documentation "The file being edited.")
-   (style (cl-css:css
+  ((style (cl-css:css
            '(("#editor"
               :position "absolute"
               :top "0"
@@ -56,15 +55,3 @@
     (pflet ((get-content ()
                          (ps:chain editor (get-value))))
       (get-content))))
-
-(defmethod open-file ((ace ace-mode) file)
-  (setf (file ace) file)
-  (with-current-buffer (buffer ace)
-    (set-content ace (uiop:read-file-string file))))
-
-(defmethod write-file ((ace ace-mode) &key (if-exists :error))
-  (alexandria:write-string-into-file (get-content ace) (file ace)
-                                     :if-exists if-exists))
-
-(defun current-ace ()
-  (find-submode (current-buffer) 'ace-mode))
