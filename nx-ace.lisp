@@ -16,11 +16,6 @@
     (lambda (mode)
       (initialize-display mode)))))
 
-(defun keep-override-map (keymaps buffer)
-  (if (nyxt::active-prompt-buffers (current-window))
-      (values keymaps buffer)
-      (values (list (override-map buffer)) buffer)))
-
 (defmethod initialize-display ((ace ace-mode))
   (let* ((content (markup:markup
                    (:head (:style (style ace)))
