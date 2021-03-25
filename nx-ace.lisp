@@ -4,7 +4,7 @@
 
 (in-package :nyxt)
 
-(define-mode ace-mode (nyxt/application-mode:application-mode)
+(define-mode ace-mode (editor-mode)
   "Mode for usage with the Ace editor."
   ((file :documentation "The file being edited.")
    (style (cl-css:css
@@ -16,17 +16,7 @@
               :left "0"))))
    (constructor
     (lambda (mode)
-      (if (current-keymaps-hook (buffer mode))
-          (hooks:add-hook (current-keymaps-hook (buffer mode))
-                          (make-handler-keymaps-buffer #'keep-override-map))
-          (make-hook-keymaps-buffer
-           :combination #'hooks:combine-composed-hook
-           :handlers (list #'keep-override-map)))
-      (initialize-display mode)))
-   (destructor
-    (lambda (mode)
-      (hooks:remove-hook (current-keymaps-hook (buffer mode))
-                         'keep-override-map)))))
+      (initialize-display mode)))))
 
 (defun keep-override-map (keymaps buffer)
   (if (nyxt::active-prompt-buffers (current-window))
@@ -55,11 +45,11 @@
                         (ps:chain editor (set-option (ps:lisp option) (ps:lisp value)))))
       (set-option option value))))
 
-(defmethod set-content ((ace ace-mode) value)
+(defmethod set-content ((ace ace-mode) content)
   (with-current-buffer (buffer ace)
-    (pflet ((set-content (value)
-                         (ps:chain editor session (set-value (ps:lisp value)))))
-      (set-content value))))
+    (pflet ((set-content (content)
+                         (ps:chain editor session (set-value (ps:lisp content)))))
+      (set-content content))))
 
 (defmethod get-content ((ace ace-mode))
   (with-current-buffer (buffer ace)
@@ -78,9 +68,3 @@
 
 (defun current-ace ()
   (find-submode (current-buffer) 'ace-mode))
-
-(define-command ace ()
-  "Show Ace editor."
-  (let* ((ace-buffer (make-buffer :title "*Ace*" :modes '(ace-mode base-mode))))
-    (set-current-buffer ace-buffer)
-    ace-buffer))
