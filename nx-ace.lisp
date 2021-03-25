@@ -1,6 +1,5 @@
-;;;; nx-ace.lisp
-
-(in-package #:nx-ace)
+;;;; SPDX-FileCopyrightText: Atlas Engineer LLC
+;;;; SPDX-License-Identifier: BSD-3-Clause
 
 (in-package :nyxt)
 
