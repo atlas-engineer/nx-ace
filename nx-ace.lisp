@@ -31,9 +31,7 @@
                              :type "text/javascript"
                              :charset "utf-8" "")
                     (:script
-                     (markup:raw "var editor = ace.edit(\"editor\");
-                                  editor.setTheme(\"ace/theme/textmate\");
-                                  editor.session.setMode(\"ace/mode/lisp\");")))))
+                     (markup:raw (ps:ps (defparameter editor (ps:chain ace (edit "editor")))))))))
          (insert-content (ps:ps (ps:chain document
                                           (write (ps:lisp content))))))
     (ffi-buffer-evaluate-javascript-async (buffer ace) insert-content)))
