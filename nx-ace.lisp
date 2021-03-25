@@ -5,7 +5,7 @@
 (in-package :nyxt)
 
 (define-mode ace-mode (nyxt/application-mode:application-mode)
-  "Mode for usage with the Ace editor"
+  "Mode for usage with the Ace editor."
   ((file :documentation "The file being edited.")
    (style (cl-css:css
            '(("#editor"
@@ -49,19 +49,28 @@
                                           (write (ps:lisp content))))))
     (ffi-buffer-evaluate-javascript-async (buffer ace) insert-content)))
 
+(defmethod set-option ((ace ace-mode) option value)
+  (with-current-buffer (buffer ace)
+    (pflet ((set-option (option value)
+                        (ps:chain editor (set-option (ps:lisp option) (ps:lisp value)))))
+      (set-option option value))))
+
 (defmethod set-content ((ace ace-mode) value)
-  (pflet ((set-content (value)
-                       (ps:chain editor session (set-value (ps:lisp value)))))
-    (set-content value)))
+  (with-current-buffer (buffer ace)
+    (pflet ((set-content (value)
+                         (ps:chain editor session (set-value (ps:lisp value)))))
+      (set-content value))))
 
 (defmethod get-content ((ace ace-mode))
-  (pflet ((get-content ()
-                       (ps:chain editor (get-value))))
-    (get-content)))
+  (with-current-buffer (buffer ace)
+    (pflet ((get-content ()
+                         (ps:chain editor (get-value))))
+      (get-content))))
 
 (defmethod open-file ((ace ace-mode) file)
   (setf (file ace) file)
-  (set-content ace (uiop:read-file-string file)))
+  (with-current-buffer (buffer ace)
+    (set-content ace (uiop:read-file-string file))))
 
 (defmethod write-file ((ace ace-mode) &key (if-exists :error))
   (alexandria:write-string-into-file (get-content ace) (file ace)
