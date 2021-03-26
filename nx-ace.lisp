@@ -1,7 +1,7 @@
 ;;;; SPDX-FileCopyrightText: Atlas Engineer LLC
 ;;;; SPDX-License-Identifier: BSD-3-Clause
 
-(in-package :nyxt)
+(in-package :nyxt/editor-mode)
 
 (define-mode ace-mode (editor-mode)
   "Mode for usage with the Ace editor."
