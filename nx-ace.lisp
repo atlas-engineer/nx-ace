@@ -20,7 +20,7 @@
   (let* ((content (markup:markup
                    (:head (:style (style ace)))
                    (:body
-                    (:div :id "editor" "Loading...")
+                    (:div :id "editor" "")
                     (:script :src "https://pagecdn.io/lib/ace/1.4.12/ace.min.js"
                              :type "text/javascript"
                              :charset "utf-8" "")
