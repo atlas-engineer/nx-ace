@@ -1,2 +1,51 @@
-* Ace for Nyxt
-This extension enables use the use of the Ace editor within Nyxt.
+#+TITLE:Ace for Nyxt
+
+This extension enables use the use of the [Ace editor](https://ace.c9.io/) within Nyxt.
+
+* Getting started (on Nyxt 3.*)
+
+First, clone the repository:
+#+begin_src sh
+  # ~/.local/share/nyxt/extensions/ is the default Nyxt extensions directory.
+  # Change if you set it to a different value.
+  git clone https://github.com/atlas-engineer/nx-ace.git ~/.local/share/nyxt/extensions/nx-ace
+#+end_src
+
+And then set up ~nx-ace:ace-mode~ as the editor mode, first loading nx-ace in your config.lisp
+#+begin_src lisp
+  (define-nyxt-user-system-and-load "nyxt-user/ace"
+     :depends-on (:nx-ace) :components ("ace.lisp"))
+#+end_src
+
+and then configuring it in ace.lisp:
+#+begin_src lisp
+(define-configuration nyxt/editor-mode:editor-buffer
+  ((default-modes (cons 'nx-ace:ace-mode %slot-value%))))
+#+end_src
+
+
+* Installing Ace extensions
+
+You can install extensions using the ~nx-ace:extensions~ slot in ~ace-mode~. Embeddable extension files can be found, for example, at https://cdnjs.com/libraries/ace. Those will be automatically loaded and available to Ace. How to enable those depends on the type of the extension.
+
+For example, if you want your Emacs keybindings and Monokai theme, you put this list of links in your ace.lisp (that you probably created above):
+#+begin_src lisp
+  (define-configuration nx-ace:ace-mode
+    ((nx-ace:extensions
+      '("https://cdnjs.cloudflare.com/ajax/libs/ace/1.9.6/keybinding-emacs.min.js"
+        "https://cdnjs.cloudflare.com/ajax/libs/ace/1.9.6/theme-monokai.min.js"))))
+#+end_src
+
+
+** Keybingings and themes
+
+While the procedure to enable an extension varies wildly, it is more or less predictable for themes and keybindings, so ~nx-ace~ enables the ones you configured it to.
+
+Now, if you want to enable your Monokai theme and Emacs keybindings, you only need to put this piece of configuration to ace.lisp (given that you added both Emacs and Monokai to your ~nx-ace:extensions~):
+#+begin_src lisp
+  (define-configuration nx-ace:ace-mode
+    ((nx-ace::theme "ace/theme/monokai")
+     (nx-ace::keybindings "ace/keyboard/emacs")))
+#+end_src
+
+And the next time you start your Nx-Ace, you'll be greeted with the cozy Monokai-themed Emacsy code editor!
