@@ -127,3 +127,7 @@ Put your extension-specific configuration here.")
     (pflet ((set-option (option value)
                         (ps:chain editor (set-option (ps:lisp option) (ps:lisp value)))))
       (set-option option value))))
+
+(defun options ()
+  "Get the list of option names currently present in the editor."
+  (alex:hash-table-keys (peval (ps:chain editor (get-options)))))
