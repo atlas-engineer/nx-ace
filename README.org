@@ -49,3 +49,20 @@ Now, if you want to enable your Monokai theme and Emacs keybindings, you only ne
 #+end_src
 
 And the next time you start your Nx-Ace, you'll be greeted with the cozy Monokai-themed Emacsy code editor!
+
+** Other extensions
+
+Other extensions are... complicated. It all depends on how they should be used. Let's take Modelist extension, for example. Ace has [[https://github.com/ajaxorg/ace/blob/master/demo/modelist.html][this example snippet]] that we can roughly translate to Parenscript and put in the ~nx-ace:epilogue~ of Ace, running the code to enable the extensions after Ace is done loading and the file is open:
+#+begin_src lisp
+  (define-configuration nx-ace:ace-mode
+    ((nx-ace:epilogue
+      (require
+       "ace/ext/modelist"
+       (lambda ()
+         (let ((modelist (ps:chain ace (require "ace/ext/modelist"))))
+           (ps:chain editor session
+                     (set-mode (ps:chain modelist
+                                         (get-mode-for-path (ps:@ window location href)) mode)))))))))
+#+end_src
+
+Once you start Ace, it will deduce the mode based on the ~editor:~ URL you have opened the file with :)

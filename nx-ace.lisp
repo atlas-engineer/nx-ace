@@ -43,6 +43,11 @@ Should be of the \"ace/theme/name\" format and should be loaded as part of `exte
     :documentation "Name of the keybinding mode to enable in Ace.
 
 Should be of the \"ace/keyboard/name\" format and should be loaded as part of `extensions', unless built into Ace.")
+   (epilogue
+    nil
+    :type string
+    :documentation "JavaScript code to run after setting the file contents.
+Put your extension-specific configuration here.")
    #+nyxt-2
    (constructor
     (lambda (mode)
@@ -90,7 +95,9 @@ Should be of the \"ace/keyboard/name\" format and should be loaded as part of `e
          (when (ps:lisp (theme ace))
            (ps:chain editor (set-theme (ps:lisp (theme ace)))))
          (ps:chain editor (set-keyboard-handler
-                           (ps:@ (require (ps:lisp (keybindings ace))) handler)))))))))
+                           (ps:@ (require (ps:lisp (keybindings ace))) handler))))))
+     (:script
+      (:raw (epilogue ace))))))
 
 (defmethod nyxt/editor-mode::set-content ((ace ace-mode) content)
   #+nyxt-3
