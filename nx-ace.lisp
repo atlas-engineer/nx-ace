@@ -101,7 +101,7 @@ Put your extension-specific configuration here.")
 
 (defmethod nyxt/editor-mode::set-content ((ace ace-mode) content)
   #+nyxt-3
-  (peval :buffer (buffer ace)
+  (ps-eval :buffer (buffer ace)
     (ps:chain editor session (set-value (ps:lisp content))))
   #+nyxt-2
   (with-current-buffer (buffer ace)
@@ -111,7 +111,7 @@ Put your extension-specific configuration here.")
 
 (defmethod nyxt/editor-mode::get-content ((ace ace-mode))
   #+nyxt-3
-  (peval :buffer (buffer ace) (ps:chain editor (get-value)))
+  (ps-eval :buffer (buffer ace) (ps:chain editor (get-value)))
   #+nyxt-2
   (with-current-buffer (buffer ace)
     (pflet ((get-content ()
@@ -120,7 +120,7 @@ Put your extension-specific configuration here.")
 
 (defmethod set-option ((ace ace-mode) option value)
   #+nyxt-3
-  (peval :buffer (buffer ace)
+  (ps-eval :buffer (buffer ace)
     (ps:chain editor (set-option (ps:lisp option) (ps:lisp value))))
   #+nyxt-2
   (with-current-buffer (buffer ace)
@@ -130,4 +130,4 @@ Put your extension-specific configuration here.")
 
 (defun options ()
   "Get the list of option names currently present in the editor."
-  (alex:hash-table-keys (peval (ps:chain editor (get-options)))))
+  (alex:hash-table-keys (ps-eval (ps:chain editor (get-options)))))
