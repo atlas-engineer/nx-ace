@@ -33,19 +33,19 @@ Example of the value:
   \"https://cdnjs.cloudflare.com/ajax/libs/ace/1.9.6/theme-tomorrow_night_eighties.min.js\"))")
    (theme
     nil
-    :type string
+    :type (maybe string)
     :documentation "Name of the theme to enable by default when opening Ace.
 
 Should be of the \"ace/theme/name\" format and should be loaded as part of `extensions', unless built into Ace.")
    (keybindings
     nil
-    :type string
+    :type (maybe string)
     :documentation "Name of the keybinding mode to enable in Ace.
 
 Should be of the \"ace/keyboard/name\" format and should be loaded as part of `extensions', unless built into Ace.")
    (epilogue
     nil
-    :type string
+    :type (maybe string)
     :documentation "JavaScript code to run after setting the file contents.
 Put your extension-specific configuration here.")
    #+nyxt-2
