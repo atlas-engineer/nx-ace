@@ -14,14 +14,22 @@
         :right "0"
         :bottom "0"
         :left "0")))
-    #+nyxt-3
+    #+(or nyxt-3-pre-release-1 nyxt-3-pre-release-2)
     (theme:themed-css (theme *browser*)
       ("#editor"
        :position "absolute"
        :top "0"
        :right "0"
        :bottom "0"
-       :left "0")))
+       :left "0"))
+    #+(and nyxt-3 (not (or nyxt-3-pre-release-1 nyxt-3-pre-release-2)))
+    (theme:themed-css (theme *browser*)
+      `("#editor"
+        :position "absolute"
+        :top "0"
+        :right "0"
+        :bottom "0"
+        :left "0")))
    (extensions
     nil
     :type list
