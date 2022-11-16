@@ -14,7 +14,7 @@
         :right "0"
         :bottom "0"
         :left "0")))
-    #+(or nyxt-3-pre-release-1 nyxt-3-pre-release-2)
+    #+nyxt-3-pre-release-1
     (theme:themed-css (theme *browser*)
       ("#editor"
        :position "absolute"
@@ -22,7 +22,7 @@
        :right "0"
        :bottom "0"
        :left "0"))
-    #+(and nyxt-3 (not (or nyxt-3-pre-release-1 nyxt-3-pre-release-2)))
+    #+(and nyxt-3 (not nyxt-3-pre-release-1))
     (theme:themed-css (theme *browser*)
       `("#editor"
         :position "absolute"
