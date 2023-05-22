@@ -3,7 +3,9 @@
 
 (in-package :nx-ace)
 
-(define-mode ace-mode (nyxt/editor-mode:editor-mode nyxt/passthrough-mode:passthrough-mode)
+(define-mode ace-mode
+    #+nyxt-2 (nyxt/editor-mode:editor-mode nyxt/passthrough-mode:passthrough-mode)
+  #+nyxt-3 (nyxt/mode/editor:editor-mode nyxt/mode/passthrough:passthrough-mode)
   "Mode for usage with the Ace editor."
   ((style
     #+nyxt-2
@@ -76,7 +78,7 @@ Put your extension-specific configuration here.")
     (ffi-buffer-evaluate-javascript-async (buffer ace) insert-content)))
 
 #+nyxt-3
-(defmethod nyxt/editor-mode::markup ((ace ace-mode))
+(defmethod nyxt/mode/editor::markup ((ace ace-mode))
   (spinneret:with-html-string
     (:head
      (:style (style ace)))
@@ -107,7 +109,7 @@ Put your extension-specific configuration here.")
      (:script
       (:raw (epilogue ace))))))
 
-(defmethod nyxt/editor-mode::set-content ((ace ace-mode) content)
+(defmethod nyxt/mode/editor::set-content ((ace ace-mode) content)
   #+nyxt-3
   (ps-eval :buffer (buffer ace)
     (ps:chain editor session (set-value (ps:lisp content))))
@@ -117,7 +119,7 @@ Put your extension-specific configuration here.")
                          (ps:chain editor session (set-value (ps:lisp content)))))
       (set-content content))))
 
-(defmethod nyxt/editor-mode::get-content ((ace ace-mode))
+(defmethod nyxt/mode/editor::get-content ((ace ace-mode))
   #+nyxt-3
   (ps-eval :buffer (buffer ace) (ps:chain editor (get-value)))
   #+nyxt-2
