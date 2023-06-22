@@ -3,9 +3,7 @@
 
 (in-package :nx-ace)
 
-(define-mode ace-mode
-    #+nyxt-2 (nyxt/editor-mode:editor-mode nyxt/passthrough-mode:passthrough-mode)
-  #+nyxt-3 (nyxt/mode/editor:editor-mode nyxt/mode/passthrough:passthrough-mode)
+(define-mode ace-mode (editor-mode passthrough-mode)
   "Mode for usage with the Ace editor."
   ((style
     #+nyxt-2
@@ -24,7 +22,7 @@
        :right "0"
        :bottom "0"
        :left "0"))
-    #+(and nyxt-3 (not nyxt-3-pre-release-1))
+    #-(or nyxt-2 nyxt-3-pre-release-1)
     (theme:themed-css (theme *browser*)
       `("#editor"
         :position "absolute"
@@ -77,8 +75,9 @@ Put your extension-specific configuration here.")
                                           (write (ps:lisp content))))))
     (ffi-buffer-evaluate-javascript-async (buffer ace) insert-content)))
 
-#+nyxt-3
-(defmethod nyxt/mode/editor::markup ((ace ace-mode))
+#+(or nyxt-3 nyxt-4)
+(defmethod markup
+  ((ace ace-mode))
   (spinneret:with-html-string
     (:head
      (:style (style ace)))
@@ -109,8 +108,9 @@ Put your extension-specific configuration here.")
      (:script
       (:raw (epilogue ace))))))
 
-(defmethod nyxt/mode/editor::set-content ((ace ace-mode) content)
-  #+nyxt-3
+(defmethod set-content
+  ((ace ace-mode) content)
+  #+(or nyxt-3 nyxt-4)
   (ps-eval :buffer (buffer ace)
     (ps:chain editor session (set-value (ps:lisp content))))
   #+nyxt-2
@@ -119,8 +119,8 @@ Put your extension-specific configuration here.")
                          (ps:chain editor session (set-value (ps:lisp content)))))
       (set-content content))))
 
-(defmethod nyxt/mode/editor::get-content ((ace ace-mode))
-  #+nyxt-3
+(defmethod get-content ((ace ace-mode))
+  #+(or nyxt-3 nyxt-4)
   (ps-eval :buffer (buffer ace) (ps:chain editor (get-value)))
   #+nyxt-2
   (with-current-buffer (buffer ace)
@@ -129,7 +129,7 @@ Put your extension-specific configuration here.")
       (get-content))))
 
 (defmethod set-option ((ace ace-mode) option value)
-  #+nyxt-3
+  #+(or nyxt-3 nyxt-4)
   (ps-eval :buffer (buffer ace)
     (ps:chain editor (set-option (ps:lisp option) (ps:lisp value))))
   #+nyxt-2
