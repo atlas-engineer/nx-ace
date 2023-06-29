@@ -4,7 +4,7 @@
 #+nyxt-2
 (defpackage #:nx-ace
   (:use #:cl))
-#+nyxt-3
+#-nyxt-2
 (nyxt:define-package #:nx-ace
   (:use #:cl
         #+(or nyxt-2 3-pre-release-1 3-pre-release-2 3-pre-release-3 3-pre-release-4 3-pre-release-5 3-pre-release-6)
