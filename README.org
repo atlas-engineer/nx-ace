@@ -19,7 +19,7 @@ And then set up ~nx-ace:ace-mode~ as the editor mode, first loading nx-ace in yo
 
 and then configuring it in ace.lisp:
 #+begin_src lisp
-(define-configuration nyxt/editor-mode:editor-buffer
+(define-configuration nyxt/mode/editor:editor-buffer
   ((default-modes (cons 'nx-ace:ace-mode %slot-value%))))
 #+end_src
 
